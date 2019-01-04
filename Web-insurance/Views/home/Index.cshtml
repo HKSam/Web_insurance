@@ -1,0 +1,172 @@
+﻿@model Web_insurance.Models.home
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="layui-header">
+    <div class="layui-logo">保险公司个人管理系统</div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+            <a href="javascript:;"> <img src="~/6b37da083ca1d9a63079f0609a4fc84f.jpg" class="layui-nav-img">@Model.name </a>
+            <dl class="layui-nav-child">
+                <dd><a href="~/Login.aspx">退出登陆</a></dd>
+            </dl>
+        </li>
+    </ul>
+</div>
+<div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="lefthead layui-nav layui-nav-tree  layui-nav-side" lay-filter="test">
+            <li class="layui-nav-item layui-this"><a href="~/home/Index"><span class="glyphicon glyphicon-home"></span>首页</a></li>
+            <li class="layui-nav-item">
+                <a class="" href="javascript:;">保单管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="~/pin/Index">保单录入</a></dd>
+                    <dd><a href="~/man/Index">保单查询</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">人力管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="~/teh/Index">新人入司</a></dd>
+                    <dd><a href="~/huq/Index">现有人力</a></dd>
+                </dl>
+            </li>
+
+        </ul>
+    </div>
+</div>
+@foreach (var n in ViewBag.home)
+{
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div class="col-md-1">
+        </div>
+        <div class=" col-md-5">
+            <div class="row">
+                <div class="panelheads col-md-6">
+
+                    <div class=" panel panel-primary">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">本月保单</h3>
+                        </div>
+                        <div class="txt panel-body">
+                            <label Class="txts">@n.data1</label>
+                            <label>单</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="panelheads col-md-6">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">本月人力</h3>
+                        </div>
+                        <div class="txt panel-body">
+                            <label Class="txts">@n.data2</label>
+                            <label>人</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <canvas class="linehead" id="popChart" height="200"></canvas>
+
+        </div>
+        <div class=" col-md-5">
+            <div class="row">
+                <div class="panelheads col-md-6">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">本月保金</h3>
+                        </div>
+                        <div class="txt panel-body">
+                            <label Class="txts">@n.data3</label>
+                            <label>元</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="panelheads col-md-6">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">本月绩效</h3>
+                        </div>
+                        <div class="txt panel-body">
+                            <label Class="txts">@n.data4</label>
+                            <label>元</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <canvas class="linehead" id="popCharts" height="200"></canvas>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+}
+<script>
+        var popCanvas = $("#popChart");
+        var popCanvas = document.getElementById("popChart");
+        var popCanvas = document.getElementById("popChart").getContext("2d");
+        var barChart = new Chart(popCanvas, {
+        type: 'line',
+        data: {
+        labels: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+            datasets: [{
+            label: "保单",
+                fill: true,
+                backgroundColor: "rgba(51, 122, 183, 0.3)",//背景填充色
+                borderColor: "#337ab7", //路径颜色
+                pointBackgroundColor: "#000", //数据点颜色
+                pointBorderColor: "#000", //数据点边框颜色
+                pointBackgroundColor: "#337ab7",//数据点背景颜色
+                data:["55", "20", "23", "42", "52", "48", "62", "63", "30", "32", "28", "14"]
+            },
+            {
+            label: "人力",
+                fill: true,
+                backgroundColor: "rgba(214, 233, 198, 0.5)",//背景填充色
+                borderColor: "#b4dc93",
+                pointBackgroundColor: "#000", //数据点颜色
+                pointBorderColor: "#000", //数据点边框颜色
+                pointBackgroundColor: "#d6e9c6",//数据点背景颜色
+                data: ["12", "4", "3", "4", "8", "6", "5", "3", "8", "5", "2", "5"]
+            }]
+        }
+    });
+    
+</script>
+<script>
+
+    var popCanvas = $("#popCharts");
+    var popCanvas = document.getElementById("popCharts");
+    var popCanvas = document.getElementById("popCharts").getContext("2d");
+    var barChart = new Chart(popCanvas, {
+        type: 'line',
+        data: {
+            labels: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+            datasets: [{
+                label: "保金",
+                fill: true,
+                borderColor: "#8be2f3",
+                backgroundColor: "rgba(188, 232, 241, 0.5)",//背景填充色
+                pointBackgroundColor: "#000", //数据点颜色
+                pointBorderColor: "#000", //数据点边框颜色
+                pointBackgroundColor: "#8be2f3",//数据点背景颜色
+                data: ["125805", "155840", "166240", "228050", "152000", "195000", "165000", "185000", "172000", "80000", "50000", "120000"]
+            },
+
+                {
+                    label: "绩效",
+                    fill: true,
+                    borderColor: " #fbdd9f",
+                    backgroundColor: "rgba(250, 235, 204, 0.8)",//背景填充色
+                    pointBackgroundColor: "#000", //数据点颜色
+                    pointBorderColor: "#000", //数据点边框颜色
+                    pointBackgroundColor: "#fbdd9f",//数据点背景颜色
+                    data: ["52460", "48000", "35000", "50000", "55840", "66240", "28050", "52000", "95000", "65000", "85000",""]
+            }]
+        }
+    });
+</script>
+

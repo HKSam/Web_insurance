@@ -1,0 +1,118 @@
+﻿@model Web_insurance.Models.home
+@{
+    ViewBag.Title = "Index";
+}
+<div class="layui-header">
+    <div class="layui-logo">保险公司个人管理系统</div>
+    <!-- 头部区域（可配合layui已有的水平导航） -->
+    <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+            <a href="javascript:;"> <img src="~/6b37da083ca1d9a63079f0609a4fc84f.jpg" class="layui-nav-img">@Model.name </a>
+            <dl class="layui-nav-child">
+              
+                <dd><a href="~/Login.aspx">退出登陆</a></dd>
+            </dl>
+        </li>
+    </ul>
+</div>
+<div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="lefthead layui-nav layui-nav-tree  layui-nav-side" lay-filter="test">
+            <li class="layui-nav-item "><a href="~/home/Index"><span class="glyphicon glyphicon-home"></span>首页</a></li>
+            <li class="layui-nav-item ">
+                <a href="javascript:;">保单管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="~/pin/Index">保单录入</a></dd>
+                    <dd><a href="~/man/Index">保单查询</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item layui-nav-itemed">
+                <a class="" href="javascript:;">人力管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="~/teh/Index">新人入司</a></dd>
+                    <dd class="layui-this"><a href="~/huq/Index">现有人力</a></dd>
+                </dl>
+            </li>
+
+        </ul>
+    </div>
+</div>
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class=" colhead col-md-12">
+        <table class="layui-hide" id="test1" lay-filter="test"></table>
+
+        <script type="text/html" id="barDemo">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">查看</a>
+            <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+        </script>
+    </div>
+</div>
+<script>
+    layui.use('table', function () {
+        var table = layui.table;
+
+        table.render({
+            elem: '#test1'
+            , url: '/huq/Table'
+            , parseData: function (res) { 
+                console.log(res);
+               return {
+                    "code": 0, 
+                    "msg": "",
+                    "count": res.length,
+                    "data": res 
+                };
+            }
+
+            , toolbar: '#toolbarDemo'
+            , title: '用户数据表'
+            , cols: [[
+                { type: 'checkbox', fixed: 'left' }
+                , { field: 'username', title: '姓名', width: 150, edit: 'text' }
+                , { field: 'sext', title: '性别', width: 150, edit: 'text' }
+                , { field: 'datet', title: '审核状态', width: 150, edit: 'text' }
+                , { field: 'phone', title: '手机号', width: 230 }
+                , { field: 'jiguan', title: '籍贯', width: 200, edit: 'text' }
+                , { field: 'numbernew', title: '新人工号', width: 200 }
+                , { field: 'number', title: '录入工号', width: 200 }
+                , { field: 'datel', title: '加入时间', width: 200, sort: true }
+                , { fixed: 'right', title: '操作', toolbar: '#barDemo', width: 150 }
+            ]]
+            , page: true
+
+        });
+
+        table.on('tool(test)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                layer.confirm('真的删除行么', function (index) {
+                    $(function () {
+                        $.ajax({
+                            type: "GET",
+                            url: "/huq/ReturnData",
+                            data: {
+                                numbernew: data.numbernew,
+                            },
+                            success: function (data) {
+                                console.log(data);
+                                if (data == 0) {
+                                    obj.del();
+                                    layer.close(index);
+                                }
+                                else {
+                                    layer.msg('删除失败', { icon: 5 });
+                                }
+                            }
+                        });
+                    });
+                    return false;
+
+                });
+            } else if (obj.event === 'edit') {
+                layer.alert('查看行：<br>' + JSON.stringify(data));
+            }
+        });
+    });
+</script>
